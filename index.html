@@ -1,98 +1,113 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Emergency Hamburg RP – Földhivatal</title>
+  <meta name="description" content="Roblox Emergency Hamburg magyar RP – Földhivatal és ingatlanügyek">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #eaeaea;
+    :root {
+      --bg: #0f1220;
+      --card: #171a2b;
+      --accent: #3b82f6;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
     }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; background: var(--bg); color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
     header {
-      background-color: #1e1e1e;
-      color: white;
-      padding: 15px;
-      text-align: center;
+      position: sticky; top: 0; backdrop-filter: saturate(150%) blur(6px);
+      background: rgba(15,18,32,0.6); border-bottom: 1px solid #24263a; z-index: 50;
     }
-    header h1 {
-      margin: 0;
-      font-size: 28px;
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 12px 24px;
     }
-    nav {
-      background-color: #333;
-      display: flex;
-      justify-content: center;
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg,#3b82f6,#9333ea);
+      display: grid; place-items: center; font-weight: 700; color: white;
     }
-    nav a {
-      color: white;
-      padding: 14px 20px;
-      text-decoration: none;
-      display: block;
+    .brand h1 { font-size: 18px; margin: 0; }
+    .menu { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px;
+      background: var(--accent); color: white; font-weight: 600; border: none; cursor: pointer;
+      box-shadow: 0 8px 24px rgba(59,130,246,0.3);
     }
-    nav a:hover {
-      background-color: #575757;
+    .btn.secondary {
+      background: transparent; border: 1px solid #2b2f48; color: var(--text); box-shadow: none;
     }
-    .container {
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    .hero {
+      padding: 24px 24px; text-align: center; background: linear-gradient(180deg, rgba(59,130,246,0.12), transparent);
     }
-    h2 {
-      color: #2c3e50;
+    .hero h2 { font-size: 32px; margin: 0 0 10px; }
+    .hero p { color: var(--muted); max-width: 800px; margin: 0 auto 16px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 800px) { .grid { grid-template-columns: 1fr 1fr; } }
+    section { margin: 32px 0; scroll-margin-top: 80px; }
+    .card {
+      background: var(--card); border: 1px solid #24263a; border-radius: 16px; padding: 20px;
     }
-    a.link {
-      color: #2980b9;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    a.link:hover {
-      text-decoration: underline;
-    }
-    footer {
-      background-color: #1e1e1e;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      margin-top: 30px;
-    }
+    .card h3 { margin: 0 0 12px; font-size: 22px; }
+    footer { margin: 24px 0 60px; color: var(--muted); text-align: center; }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>Emergency Hamburg RP – Földhivatal</h1>
-    <p>Magyar RP szerver hivatalos ingatlanügyintézése</p>
+    <nav class="nav container">
+      <div class="brand">
+        <div class="logo">FH</div>
+        <h1>Földhivatal</h1>
+      </div>
+      <div class="menu">
+        <a class="btn secondary" href="#urlap">Űrlap</a>
+        <a class="btn secondary" href="#nyilvantartas">Nyilvántartás</a>
+        <a class="btn secondary" href="#szabalyzat">Szabályzat</a>
+        <a class="btn" href="https://discord.gg/jt8veFAWYy" target="_blank">Discord</a>
+      </div>
+    </nav>
   </header>
 
-  <nav>
-    <a href="#urlap">Űrlap</a>
-    <a href="#nyilvantartas">Nyilvántartás</a>
-    <a href="#szabalyzat">Szabályzat</a>
-  </nav>
+  <main>
+    <section class="hero">
+      <h2>Emergency Hamburg RP – Földhivatal</h2>
+      <p>Itt tudod intézni az ingatlanokkal kapcsolatos ügyeidet: regisztráció, nyilvántartás és szabályzat.</p>
+    </section>
 
-  <div class="container" id="urlap">
-    <h2>📋 Ingatlanregisztrációs űrlap</h2>
-    <p><a class="link" href="https://docs.google.com/forms/d/1JUHvJkLjC0ka8Vgfu4fC2qJYf9EB8-ayHDmZPsu_N9I/edit" target="_blank">➡️ Űrlap megnyitása</a></p>
-  </div>
+    <section id="urlap" class="container">
+      <div class="card">
+        <h3>📋 Ingatlanregisztrációs űrlap</h3>
+        <p><a class="btn" href="https://docs.google.com/forms/d/1JUHvJkLjC0ka8Vgfu4fC2qJYf9EB8-ayHDmZPsu_N9I/edit" target="_blank">Űrlap kitöltése</a></p>
+      </div>
+    </section>
 
-  <div class="container" id="nyilvantartas">
-    <h2>📊 Ingatlan nyilvántartás</h2>
-    <p><a class="link" href="https://docs.google.com/spreadsheets/d/1ORiG3r3GS68gH-sfhkuirFNPc9uJKqonPMbZEEeKKwQ/edit?gid=0#gid=0" target="_blank">➡️ Nyilvántartás megtekintése</a></p>
-  </div>
+    <section id="nyilvantartas" class="container">
+      <div class="card">
+        <h3>📊 Ingatlan nyilvántartás</h3>
+        <p><a class="btn" href="https://docs.google.com/spreadsheets/d/1ORiG3r3GS68gH-sfhkuirFNPc9uJKqonPMbZEEeKKwQ/edit?gid=0#gid=0" target="_blank">Nyilvántartás megnyitása</a></p>
+      </div>
+    </section>
 
-  <div class="container" id="szabalyzat">
-    <h2>📄 Földhivatali szabályzat</h2>
-    <p><a class="link" href="https://docs.google.com/document/d/1h6zRSCONM5gumVXw69_-tay_LnFFSfqNwbDfzCGJSjc/edit?tab=t.0#heading=h.4ulhz8gp55g5" target="_blank">➡️ Szabályzat megtekintése</a></p>
-  </div>
+    <section id="szabalyzat" class="container">
+      <div class="card">
+        <h3>📄 Földhivatali szabályzat</h3>
+        <p><a class="btn secondary" href="https://docs.google.com/document/d/1h6zRSCONM5gumVXw69_-tay_LnFFSfqNwbDfzCGJSjc/edit?tab=t.0#heading=h.4ulhz8gp55g5" target="_blank">Szabályzat megtekintése</a></p>
+      </div>
+    </section>
+  </main>
 
-  <footer>
-    <p>© 2025 Emergency Hamburg RP – Magyar Földhivatal</p>
+  <footer class="container">
+    © 2025 Emergency Hamburg RP – Földhivatal
   </footer>
-
 </body>
 </html>
