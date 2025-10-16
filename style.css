@@ -60,3 +60,9 @@
   height: auto;    /* arányosan méretezze */
   border-radius: 8px; /* opcionális */
 }
+
+.iframe-container {
+  display: flex;
+  justify-content: center; /* vízszintesen középre */
+  margin: 20px 0;
+}
