@@ -92,3 +92,8 @@
       color: var(--muted, #9ca3af);
       font-size: 14px;
     }
+    .logo-img {
+  height: 40px;   /* vagy amekkora jól mutat */
+  width: auto;
+  margin-right: 10px; /* hogy ne tapadjon a szöveghez */
+}
