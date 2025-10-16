@@ -56,7 +56,7 @@
 }
 
     .map {
-  max-width: 90%;  /* ne legyen túl nagy */
+  max-width: 50%;  /* ne legyen túl nagy */
   height: auto;    /* arányosan méretezze */
   border-radius: 8px; /* opcionális */
 }
