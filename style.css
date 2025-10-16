@@ -58,7 +58,7 @@
     .map {
   max-width: 50%;  /* ne legyen túl nagy */
   height: auto;    /* arányosan méretezze */
-  border-radius: 8px; /* opcionális */
+  border-radius: 15px; /* opcionális */
 }
 
 .iframe-container {
