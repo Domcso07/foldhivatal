@@ -63,6 +63,11 @@
 
 .iframe-container {
   display: flex;
-  justify-content: center; /* vízszintesen középre */
-  margin: 20px 0;
+  justify-content: center;
+}
+
+.iframe-container iframe {
+  width: 80%;
+  height: calc(100vh - 200px); /* 200px helyett annyit vonj le, amennyi a header + cím + kép */
+  border: none;
 }
