@@ -3,63 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Földhivatal</title>
+  <title>Emergency Hamburg RP – Földhivatal</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
       margin: 0;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #eaeaea;
     }
     header {
-      background-color: #2c3e50;
+      background-color: #1e1e1e;
       color: white;
-      padding: 20px;
+      padding: 15px;
       text-align: center;
     }
-    section {
-      background-color: white;
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    nav {
+      background-color: #333;
+      display: flex;
+      justify-content: center;
+    }
+    nav a {
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+      display: block;
+    }
+    nav a:hover {
+      background-color: #575757;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
       padding: 20px;
-      margin-top: 20px;
+      background: white;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
     h2 {
       color: #2c3e50;
     }
-    a {
+    a.link {
       color: #2980b9;
+      font-weight: bold;
       text-decoration: none;
     }
-    a:hover {
+    a.link:hover {
       text-decoration: underline;
+    }
+    footer {
+      background-color: #1e1e1e;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Földhivatal</h1>
-    <p>Ingatlanügyek intézése a magyar RP szerveren</p>
+    <h1>Emergency Hamburg RP – Földhivatal</h1>
+    <p>Magyar RP szerver hivatalos ingatlanügyintézése</p>
   </header>
 
-  <section>
+  <nav>
+    <a href="#urlap">Űrlap</a>
+    <a href="#nyilvantartas">Nyilvántartás</a>
+    <a href="#szabalyzat">Szabályzat</a>
+  </nav>
+
+  <div class="container" id="urlap">
     <h2>📋 Ingatlanregisztrációs űrlap</h2>
-    <p>Töltsd ki az alábbi űrlapot, ha új ingatlant szeretnél regisztrálni:</p>
-    <p><a href="https://docs.google.com/forms/d/1JUHvJkLjC0ka8Vgfu4fC2qJYf9EB8-ayHDmZPsu_N9I/edit" target="_blank">➡️ Regisztrációs űrlap megnyitása</a></p>
-  </section>
+    <p><a class="link" href="https://docs.google.com/forms/d/1JUHvJkLjC0ka8Vgfu4fC2qJYf9EB8-ayHDmZPsu_N9I/edit" target="_blank">➡️ Űrlap megnyitása</a></p>
+  </div>
 
-  <section>
+  <div class="container" id="nyilvantartas">
     <h2>📊 Ingatlan nyilvántartás</h2>
-    <p>Tekintsd meg a regisztrált ingatlanokat és tulajdonosokat:</p>
-    <p><a href="https://docs.google.com/spreadsheets/d/1ORiG3r3GS68gH-sfhkuirFNPc9uJKqonPMbZEEeKKwQ/edit?gid=0#gid=0" target="_blank">➡️ Nyilvántartás megtekintése</a></p>
-  </section>
+    <p><a class="link" href="https://docs.google.com/spreadsheets/d/1ORiG3r3GS68gH-sfhkuirFNPc9uJKqonPMbZEEeKKwQ/edit?gid=0#gid=0" target="_blank">➡️ Nyilvántartás megtekintése</a></p>
+  </div>
 
-  <section>
+  <div class="container" id="szabalyzat">
     <h2>📄 Földhivatali szabályzat</h2>
-    <p>Olvasd el a Földhivatal működésére vonatkozó szabályokat és eljárásokat:</p>
-    <p><a href="https://docs.google.com/document/d/1h6zRSCONM5gumVXw69_-tay_LnFFSfqNwbDfzCGJSjc/edit?tab=t.0#heading=h.4ulhz8gp55g5" target="_blank">➡️ Szabályzat megtekintése</a></p>
-  </section>
+    <p><a class="link" href="https://docs.google.com/document/d/1h6zRSCONM5gumVXw69_-tay_LnFFSfqNwbDfzCGJSjc/edit?tab=t.0#heading=h.4ulhz8gp55g5" target="_blank">➡️ Szabályzat megtekintése</a></p>
+  </div>
+
+  <footer>
+    <p>© 2025 Emergency Hamburg RP – Magyar Földhivatal</p>
+  </footer>
 
 </body>
 </html>
