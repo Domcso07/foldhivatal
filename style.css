@@ -67,7 +67,7 @@
 }
 
 .iframe-container iframe {
-  width: 95%;
+  width: 100%;
   height: calc(100vh - 150px); /* 200px helyett annyit vonj le, amennyi a header + cím + kép */
   border: none;
 }
