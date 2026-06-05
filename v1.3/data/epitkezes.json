@@ -1,0 +1,111 @@
+[
+  {
+    "id": "club-parkolo",
+    "type": "projekt",
+    "status": "epul",
+    "category": "Közlekedés",
+    "title": "Magyar Club Parkoló építése",
+    "date": "2026-06-10",
+    "author": "",
+    "investor": "Magyar Club",
+    "progress": 65,
+    "short": "Férőhely bővítés és forgalmi rend frissítés.",
+    "description": "Teljesen új parkoló épül az autópálya legvégén, a club mellett. Sok lesz a férőhelyek száma, szélesebb beállók és jobb kihajtási rend készül. A projekt jelenleg kivitelezés alatt áll.",
+    "listImage": "images/beruhazas/magyar-club-parkolo/logo.png",
+    "listImageFit": "contain",
+    "images": [
+      "images/beruhazas/magyar-club-parkolo/parkolo-1.png"    
+    ],
+    "history": [
+      {
+        "date": "2026-05-28",
+        "text": "Terület kijelölése és terv jóváhagyás."
+      },
+      {
+        "date": "2026-06-03",
+        "text": "A lapozási és burkolat-előkészítési munkák elindultak."
+      },
+      {
+        "date": "2026-06-10",
+        "text": "Első felfestések és lámpahelyek kialakítása."
+      }
+    ]
+  },
+  {
+    "id": "hamburg-allomas",
+    "type": "projekt",
+    "status": "kesz",
+    "category": "Közlekedés",
+    "title": "Hamburgi Vasúti Állomás kiépítése",
+    "date": "2026-06-05",
+    "author": "Nagy Máté",
+    "investor": "DB (Deutsche Bahn)",
+    "progress": 100,
+    "short": "Állomási közlekedés és peronkapcsolat fejlesztés.",
+    "description": "Az állomás környezete megújult, átláthatóbb gyalogos kapcsolatokkal és jobb közlekedési ritmussal.",
+    "images": [
+      "images/beruhazas/hamburgi-db/hamburg-db-1.png",
+      "images/beruhazas/hamburgi-db/hamburg-db-2.png"
+    ],
+    "history": [
+      {
+        "date": "2026-05-18",
+        "text": "Forgalmi modellezés és szükséglista lezárva."
+      },
+      {
+        "date": "2026-05-27",
+        "text": "Peron melletti burkolati munkák és jelzések cseréje."
+      },
+      {
+        "date": "2026-06-05",
+        "text": "Projekt átadva, forgalomba helyezve."
+      }
+    ]
+  },
+
+  {
+    "id": "hir-palyazat",
+    "type": "hir",
+    "category": "Pályázat",
+    "title": "Új pályázati kör nyílt nagyprojektekhez",
+    "date": "2026-06-12",
+    "author": "Admin",
+    "investor": "Földhivatal",
+    "short": "Elindult a nyári beruházási pályázat.",
+    "description": "A következő ciklusban kiemelten támogatottak azok a beruházások, amelyek közösségi előnyt hoznak.",
+    "images": [
+      "images/hirek/palyazat-1.png"
+    ],
+    "history": [
+      {
+        "date": "2026-06-12",
+        "text": "Pályázat megnyitva."
+      }
+    ]
+  },
+  {
+    "id": "hir-zaro",
+    "type": "hir",
+    "category": "Összefoglaló",
+    "title": "Havi beruházási összefoglaló közzétéve",
+    "date": "2026-06-01",
+    "author": "Szabó Levente",
+    "investor": "Földhivatal",
+    "short": "Elérhető a teljes havi riport.",
+    "description": "Elérhető a havi jelentés a kész, folyamatban lévő és tervezett fejlesztésekről.",
+    "images": [
+      "images/hirek/osszefoglalo-1.png",
+      "images/hirek/osszefoglalo-2.png"
+    ],
+    "history": [
+      {
+        "date": "2026-05-30",
+        "text": "Adatgyűjtés lezárva."
+      },
+      {
+        "date": "2026-06-01",
+        "text": "Összefoglaló publikálva."
+      }
+    ]
+  }
+]

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Ingatlan nyilvántartás</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header>
+    <nav class="nav container">
+  <div class="brand">
+    <div class="logo">FH</div>
+    <h1>Földhivatal</h1>
+  </div>
+
+  <div class="menu">
+    <a class="btn secondary" href="index.html">Kezdőlap</a>
+    <a class="btn secondary" href="urlap.html">Űrlap</a>
+    <a class="btn secondary" href="nyilvantartas.html">Nyilvántartás</a>
+    <a class="btn secondary" href="szabalyzat.html">Szabályzat</a>
+    <a class="btn secondary" href="csapat.html">Csapat</a>
+  </div>
+</nav>
+  </header>
+
+  <main>
+    <h1>📊 Ingatlan nyilvántartás</h1>
+
+
+    <div class="map-container">
+        <embed src="images/Maprender_v3_final.jpg" class="map" id="map">
+    </div>
+    <div id="map-modal" class="map-modal">
+  <span class="close-btn">✕</span>
+  <img src="images/Maprender_v3_final.jpg" class="map-full">
+</div>
+
+<p id="table-status" class="hint">Betoltes...</p>
+<div  class="houseSearch">
+<input 
+  type="number" 
+  id="search-input" 
+  placeholder="🔍 Házszám keresése..."
+  autocomplete="off"
+/></div>
+<div class="table-container">
+  <table id="data-table"></table>
+</div>
+    </main>
+    <div id="rotate-warning">
+  <div class="box">
+    <h2>📱 Kérjük fordítsd el a telefonod</h2>
+    <p>Ez az oldal mobilon fekvő módban vagy számítógépen használható.</p>
+  </div>
+</div>
+    <footer>
+  © 2026 Magyar/HUN RP – Földhivatal | <a href="https://discord.gg/jt8veFAWYy" target="_blank">Discord</a>
+</footer>
+<script>
+
+const map = document.querySelector(".map");
+const modal = document.getElementById("map-modal");
+const closeBtn = document.querySelector(".close-btn");
+
+const isMobile = () => window.innerWidth <= 768;
+
+// 🔥 csak mobilon aktiv
+map.addEventListener("click", () => {
+  if (!isMobile()) return;
+  modal.classList.add("active");
+});
+
+closeBtn.addEventListener("click", () => {
+  modal.classList.remove("active");
+});
+
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.classList.remove("active");
+  }
+});
+
+function checkOrientation() {
+  const warning = document.getElementById("rotate-warning");
+
+  if (window.innerWidth < 768 && window.innerHeight > window.innerWidth) {
+    warning.style.display = "flex";
+  } else {
+    warning.style.display = "none";
+  }
+}
+
+window.addEventListener("resize", checkOrientation);
+window.addEventListener("load", checkOrientation);
+
+
+const tableStatus = document.getElementById("table-status");
+
+async function loadTable() {
+  const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRS-QKDRs49YvSLOURnDFhgtfZeMnsLqEMW5gcY-sKhzy35ZysCvzm2BkxVRvvz8pRaSzlxlw9lWGMs/pub?output=csv";
+  const table = document.getElementById("data-table");
+
+  tableStatus.textContent = "Betoltes...";
+  table.innerHTML = "";
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP hiba: " + res.status);
+
+    const text = await res.text();
+
+    const rows = text
+      .trim()
+      .split("\n")
+      .map(line =>
+        line
+          .split(",")
+          .map(cell => (cell || "").replace(/\r/g, "").replace(/"/g, "").trim())
+      );
+
+    if (!rows.length) throw new Error("Ures adat");
+
+    const maxCols = Math.max(...rows.map(r => r.length));
+
+    rows.forEach((row, i) => {
+      const isMobile = window.innerWidth < 768;
+      if (i === 0 && isMobile) return;
+
+      const tr = document.createElement("tr");
+
+      while (row.length < maxCols) row.push("");
+
+      row.forEach((cell, j) => {
+        const el = document.createElement(i === 0 ? "th" : "td");
+        const clean = (cell || "").replace(/\r/g, "").trim();
+        el.textContent = clean || "–";
+
+        if (i !== 0) el.setAttribute("data-label", rows[0][j] || "");
+        tr.appendChild(el);
+      });
+
+      table.appendChild(tr);
+    });
+
+    tableStatus.textContent = "";
+  } catch (err) {
+    console.error(err);
+    tableStatus.textContent = "Betoltes sikertelen. Probald ujra kesobb.";
+    table.innerHTML = "";
+  }
+}
+const searchInput = document.getElementById("search-input");
+
+searchInput.addEventListener("input", () => {
+  const value = searchInput.value.trim();
+  const rows = document.querySelectorAll("#data-table tr");
+
+  let foundRow = null;
+
+  rows.forEach((row, i) => {
+    if (i === 0) return; // header skip
+    const firstCell = row.children[0]?.textContent.trim();
+
+    if (value === "") {
+      row.classList.remove("row-hidden", "row-active");
+      return;
+    }
+
+    if (firstCell === value && value !== "") {
+      row.classList.remove("row-hidden");
+      row.classList.add("row-active");
+      foundRow = row;
+    } else {
+      row.classList.remove("row-active");
+      row.classList.add("row-hidden");
+    }
+  });
+
+  // 🔥 AUTO SCROLL
+const container = document.querySelector(".table-container");
+if (!foundRow) return;
+
+const rowTop = foundRow.offsetTop;
+const rowHeight = foundRow.offsetHeight;
+const containerHeight = container.clientHeight;
+
+container.scrollTo({
+  top: rowTop - (containerHeight / 2) + (rowHeight / 2),
+  behavior: "smooth"
+});
+
+});
+loadTable();
+
+</script>
+</body>
+</html>

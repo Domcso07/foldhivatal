@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beruházások és Hírek - Földhivatal</title>
+  <meta name="description" content="Magyar/HUN RP - Földhivatal beruházások és hírek">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .page-title {
+      text-align: center;
+      margin: 0;
+      font-size: 34px;
+    }
+
+    .page-subtitle {
+      color: var(--muted);
+      text-align: center;
+      max-width: 760px;
+      margin: 10px auto 0;
+      line-height: 1.6;
+    }
+
+    .top-tools {
+      display: grid;
+      gap: 12px;
+      margin: 16px 0 8px;
+    }
+
+    .switches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .switch-btn {
+      background: transparent;
+      border: 1px solid #2b2f48;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 9px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+    }
+
+    .switch-btn.active {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.16);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.15) inset;
+    }
+
+    .switch-btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+    }
+
+    #search-input {
+      width: 100%;
+      max-width: 360px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #2b2f48;
+      background: #171a2b;
+      color: #e5e7eb;
+      margin: 0;
+      display: block;
+      font-size: 14px;
+    }
+
+    #search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(59,130,246,0.15);
+    }
+
+    .feed {
+      display: grid;
+      gap: 10px;
+      margin: 16px 0 20px;
+    }
+
+    .list-item {
+      background: var(--card);
+      border: 1px solid #24263a;
+      border-radius: 14px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: itemIn 0.35s ease forwards;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .list-item:hover {
+      border-color: #35518f;
+      transform: translateY(-1px);
+    }
+
+    .mini-cover {
+      width: 100%;
+      height: 78px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #2b2f48;
+      background: #101427;
+    }
+
+    .item-title {
+      margin: 0 0 5px;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .item-meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 7px;
+    }
+
+    .chip {
+      border: 1px solid #2b2f48;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      color: var(--muted);
+      background: #131727;
+    }
+
+    .chip.status {
+      color: #dbeafe;
+      background: rgba(59,130,246,0.16);
+      border-color: rgba(59,130,246,0.36);
+    }
+
+    .open-btn {
+      border: 1px solid #2b2f48;
+      background: #151a2d;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 9px 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      min-width: 88px;
+      font-weight: 600;
+      transition: all 0.22s ease;
+    }
+
+    .open-btn:hover {
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 8px 22px rgba(59,130,246,0.22);
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      margin: 20px 0 0;
+    }
+
+    .detail-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      padding: 18px;
+      background: rgba(10,12,20,0.86);
+      backdrop-filter: blur(6px);
+    }
+
+    .detail-modal.active {
+      display: grid;
+      place-items: center;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .detail-panel {
+      width: min(1000px, 100%);
+      max-height: 92vh;
+      overflow-y: auto;
+      background: #121628;
+      border: 1px solid #2b2f48;
+      border-radius: 16px;
+      padding: 14px;
+      transform: translateY(10px);
+      animation: panelIn 0.28s ease forwards;
+    }
+
+    .detail-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .detail-title {
+      margin: 0 0 5px;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .detail-meta {
+      color: var(--muted);
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .close-btn {
+      border: 1px solid #2b2f48;
+      background: #181d31;
+      color: var(--text);
+      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .detail-desc {
+      margin: 0 0 14px;
+      line-height: 1.7;
+    }
+
+    .progress-wrap {
+      margin: 0 0 14px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .progress-text {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .progress-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: #101427;
+      border: 1px solid #2b2f48;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #16a34a);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+      animation: pulseBar 2s ease-in-out infinite;
+    }
+
+    .gallery-main-wrap {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #2b2f48;
+      background: #0c0f1a;
+      position: relative;
+    }
+
+    .gallery-main {
+      width: 100%;
+      height: clamp(210px, 42vw, 500px);
+      object-fit: cover;
+      display: block;
+      animation: zoomIn 0.25s ease;
+    }
+
+    .gallery-nav {
+      position: absolute;
+      inset: auto 8px 8px auto;
+      display: flex;
+      gap: 6px;
+    }
+
+    .gallery-btn {
+      border: 1px solid #2b2f48;
+      background: rgba(15,18,32,0.88);
+      color: var(--text);
+      border-radius: 9px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .thumbs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .thumb {
+      border: 1px solid #2b2f48;
+      background: #101427;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 68px;
+      object-fit: cover;
+      display: block;
+      opacity: 0.75;
+      transition: opacity 0.2s ease;
+    }
+
+    .thumb.active {
+      border-color: var(--accent);
+    }
+
+    .thumb.active img,
+    .thumb:hover img {
+      opacity: 1;
+    }
+
+    .history {
+      margin-top: 12px;
+      border-top: 1px solid #2b2f48;
+      padding-top: 10px;
+    }
+
+    .history h4 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .history-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 7px;
+    }
+
+    .history-list li {
+      border-left: 2px solid #2b2f48;
+      padding-left: 10px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .history-list strong {
+      color: var(--text);
+    }
+
+    @keyframes itemIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes panelIn {
+      to { transform: translateY(0); }
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(1.02); opacity: 0.9; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pulseBar {
+      0% { filter: brightness(0.9); }
+      50% { filter: brightness(1.2); }
+      100% { filter: brightness(0.9); }
+    }
+
+    @media (min-width: 900px) {
+      .top-tools {
+        grid-template-columns: auto 1fr;
+        align-items: center;
+      }
+
+      #search-input {
+        margin-left: auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 12px;
+      }
+
+      .hero {
+        padding: 18px 12px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+      }
+
+      .list-item {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .mini-cover {
+        height: 150px;
+      }
+
+      .open-btn {
+        width: 100%;
+      }
+
+      .detail-modal {
+        padding: 8px;
+      }
+
+      .detail-panel {
+        border-radius: 14px;
+        padding: 10px;
+        max-height: 95vh;
+      }
+
+      .detail-title {
+        font-size: 22px;
+      }
+
+      .gallery-main {
+        height: 210px;
+      }
+
+      .thumbs {
+        display: flex;
+        overflow-x: auto;
+      }
+
+      .thumb {
+        flex: 0 0 92px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav container">
+      <div class="brand">
+        <img src="images/foldhivatal.png" alt="Földhivatal logó" class="logo-img">
+        <h1>Földhivatal</h1>
+      </div>
+      <div class="menu">
+        <a class="btn secondary" href="index.html">Kezdőlap</a>
+        <a class="btn secondary" href="urlap.html">Űrlap</a>
+        <a class="btn secondary" href="nyilvantartas.html">Nyilvántartás</a>
+        <a class="btn secondary" href="szabalyzat.html">Szabályzat</a>
+        <a class="btn secondary" href="csapat.html">Csapat</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2 class="page-title">Beruházások és Hírek</h2>
+      <p class="page-subtitle">
+        Kompakt listában látod a frissítéseket. Részletek gombra kattintva nyílik meg a teljes nézet képekkel, historyval és projekt adatokkal.
+      </p>
+    </section>
+
+    <section class="container">
+      <div class="top-tools">
+        <div class="switches">
+          <button class="switch-btn active" data-type="projekt">Építkezések</button>
+          <button class="switch-btn" data-type="hir">Hírek</button>
+        </div>
+        <input id="search-input" type="text" placeholder="Keresés címre, frakcióra vagy szerzőre...">
+      </div>
+
+      <div id="feed" class="feed"></div>
+      <p id="emptyState" class="empty" hidden>Nincs találat.</p>
+    </section>
+  </main>
+
+  <div id="detailModal" class="detail-modal" aria-hidden="true">
+    <div class="detail-panel" id="detailPanel"></div>
+  </div>
+
+  <footer>
+    © 2026 Magyar/HUN RP - Földhivatal |
+    <a href="https://discord.gg/jt8veFAWYy" target="_blank" rel="noopener noreferrer">Discord</a>
+  </footer>
+
+  <script>
+    const items = [
+      {
+        id: "club-parkolo",
+        type: "projekt",
+        status: "Épül",
+        title: "Magyar Club parkoló bővítés",
+        date: "2026-06-10",
+        author: "Kiss Bence",
+        investor: "Magyar Club",
+        progress: 65,
+        description: "Új férőhelyek, szélesebb beállók és jobb kihajtási rend készül. A projekt jelenleg kivitelezés alatt van.",
+        short: "Férőhelybővítés és forgalom rendezés.",
+        images: [
+          "images/beruhazas/magyar-club-1.png",
+          "images/beruhazas/magyar-club-2.png",
+          "images/beruhazas/magyar-club-3.png"
+        ],
+        history: [
+          { date: "2026-05-28", text: "Terület kijelölése és terv jóváhagyás." },
+          { date: "2026-06-03", text: "Alapozási és burkolat-előkészítési munkák indulása." },
+          { date: "2026-06-10", text: "Első felfestések és lámpahelyek kialakítása." }
+        ]
+      },
+      {
+        id: "hamburg-allomas",
+        type: "projekt",
+        status: "Kész",
+        title: "Hamburgi vasúti állomás modernizáció",
+        date: "2026-06-05",
+        author: "Nagy Máté",
+        investor: "DB Frakció",
+        progress: 100,
+        description: "Az állomás környezete megújult, átláthatóbb gyalogos kapcsolatokkal és jobb közlekedési ritmussal.",
+        short: "Átadva, teljes forgalommal működik.",
+        images: [
+          "images/beruhazas/hamburg-db-1.png",
+          "images/beruhazas/hamburg-db-2.png"
+        ],
+        history: [
+          { date: "2026-05-18", text: "Forgalmi modellezés és szükséglista lezárva." },
+          { date: "2026-05-27", text: "Peron melletti burkolati munkák és jelzések cseréje." },
+          { date: "2026-06-05", text: "Projekt átadva, forgalomba helyezve." }
+        ]
+      },
+      {
+        id: "deli-logisztika",
+        type: "projekt",
+        status: "Tervezett",
+        title: "Déli logisztikai csomópont (I. ütem)",
+        date: "2026-06-14",
+        author: "Tóth Áron",
+        investor: "Kereskedelmi Tanács",
+        progress: 20,
+        description: "Nagy teherforgalomra tervezett új csomópont. Előkészítés és engedélyeztetés zajlik.",
+        short: "Jelenleg tervezési szakaszban.",
+        images: [
+          "images/beruhazas/logisztika-terv.png"
+        ],
+        history: [
+          { date: "2026-06-02", text: "Tervezési koncepció beadása." },
+          { date: "2026-06-08", text: "Frakciós egyeztetés és költségbecslés." },
+          { date: "2026-06-14", text: "Engedélyezési csomag benyújtva." }
+        ]
+      },
+      {
+        id: "hir-palyazat",
+        type: "hir",
+        title: "Új pályázati kör nyílt nagyprojektekhez",
+        date: "2026-06-12",
+        author: "Admin",
+        investor: "Földhivatal",
+        description: "A következő ciklusban kiemelten támogatottak azok a beruházások, amelyek közösségi előnyt hoznak.",
+        short: "Megnyílt az új támogatási ciklus.",
+        images: [
+          "images/hirek/palyazat-1.png"
+        ],
+        history: [
+          { date: "2026-06-12", text: "Pályázat megnyitva." }
+        ]
+      },
+      {
+        id: "hir-zarojelentes",
+        type: "hir",
+        title: "Havi beruházási összefoglaló közzétéve",
+        date: "2026-06-01",
+        author: "Szabó Levente",
+        investor: "Földhivatal",
+        description: "Elérhető a havi jelentés a kész, folyamatban lévő és tervezett fejlesztésekről.",
+        short: "Publikálva a teljes havi riport.",
+        images: [
+          "images/hirek/osszefoglalo-1.png",
+          "images/hirek/osszefoglalo-2.png"
+        ],
+        history: [
+          { date: "2026-05-30", text: "Adatgyűjtés lezárva." },
+          { date: "2026-06-01", text: "Összefoglaló publikálva." }
+        ]
+      }
+    ];
+
+    const feedEl = document.getElementById("feed");
+    const searchEl = document.getElementById("search-input");
+    const emptyEl = document.getElementById("emptyState");
+    const typeButtons = document.querySelectorAll(".switch-btn");
+    const modal = document.getElementById("detailModal");
+    const detailPanel = document.getElementById("detailPanel");
+
+    let activeType = "projekt";
+    const galleryIndex = {};
+    items.forEach(item => galleryIndex[item.id] = 0);
+
+    function formatDate(iso) {
+      return new Date(iso).toLocaleDateString("hu-HU", { year: "numeric", month: "long", day: "numeric" });
+    }
+
+    function filteredItems() {
+      const q = searchEl.value.trim().toLowerCase();
+      return items
+        .filter(item => item.type === activeType)
+        .filter(item => `${item.title} ${item.short} ${item.description} ${item.author} ${item.investor}`.toLowerCase().includes(q))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    function renderFeed() {
+      const data = filteredItems();
+      feedEl.innerHTML = "";
+      emptyEl.hidden = data.length > 0;
+
+      data.forEach((item, i) => {
+        const el = document.createElement("article");
+        el.className = "list-item";
+        el.style.animationDelay = `${i * 0.04}s`;
+
+        el.innerHTML = `
+          <img class="mini-cover" src="${item.images[0]}" alt="${item.title}">
+          <div>
+            <h3 class="item-title">${item.title}</h3>
+            <p class="item-meta">${formatDate(item.date)} | Írta: ${item.author} | ${item.investor}</p>
+            <div class="chips">
+              ${item.type === "projekt" ? `<span class="chip status">${item.status}</span>` : ""}
+              <span class="chip">${item.short}</span>
+              <span class="chip">${item.history.length} frissítés</span>
+            </div>
+          </div>
+          <button class="open-btn" data-open="${item.id}">Részletek</button>
+        `;
+
+        feedEl.appendChild(el);
+      });
+    }
+
+    function renderDetail(itemId) {
+      const item = items.find(x => x.id === itemId);
+      if (!item) return;
+      const current = item.images[galleryIndex[item.id]] || item.images[0];
+
+      detailPanel.innerHTML = `
+        <div class="detail-top">
+          <div>
+            <h3 class="detail-title">${item.title}</h3>
+            <p class="detail-meta">${formatDate(item.date)} | Írta: ${item.author} | Befektető/frakció: ${item.investor}</p>
+          </div>
+          <button class="close-btn" id="closeDetail" aria-label="Bezárás">×</button>
+        </div>
+
+        <p class="detail-desc">${item.description}</p>
+
+        ${item.type === "projekt" ? `
+          <div class="progress-wrap">
+            <div class="progress-text">Készültség: ${item.progress}% | Státusz: ${item.status}</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${item.progress}%"></div></div>
+          </div>
+        ` : ""}
+
+        <div class="gallery-main-wrap">
+          <img class="gallery-main" src="${current}" alt="${item.title}">
+          ${item.images.length > 1 ? `
+            <div class="gallery-nav">
+              <button class="gallery-btn" data-gallery="prev" data-id="${item.id}"><</button>
+              <button class="gallery-btn" data-gallery="next" data-id="${item.id}">></button>
+            </div>
+          ` : ""}
+        </div>
+
+        ${item.images.length > 1 ? `
+          <div class="thumbs">
+            ${item.images.map((src, idx) => `
+              <button class="thumb ${galleryIndex[item.id] === idx ? "active" : ""}" data-gallery="thumb" data-id="${item.id}" data-index="${idx}">
+                <img src="${src}" alt="${item.title} ${idx + 1}">
+              </button>
+            `).join("")}
+          </div>
+        ` : ""}
+
+        <div class="history">
+          <h4>Frissítési history</h4>
+          <ul class="history-list">
+            ${item.history.map(h => `<li><strong>${formatDate(h.date)}</strong> - ${h.text}</li>`).join("")}
+          </ul>
+        </div>
+      `;
+
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeDetail() {
+      modal.classList.remove("active");
+      modal.setAttribute("aria-hidden", "true");
+      detailPanel.innerHTML = "";
+    }
+
+    feedEl.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-open]");
+      if (!btn) return;
+      renderDetail(btn.dataset.open);
+    });
+
+    detailPanel.addEventListener("click", (e) => {
+      if (e.target.id === "closeDetail") {
+        closeDetail();
+        return;
+      }
+
+      const gBtn = e.target.closest("[data-gallery]");
+      if (!gBtn) return;
+
+      const id = gBtn.dataset.id;
+      const item = items.find(x => x.id === id);
+      if (!item) return;
+
+      if (gBtn.dataset.gallery === "prev") {
+        galleryIndex[id] = (galleryIndex[id] - 1 + item.images.length) % item.images.length;
+      }
+
+      if (gBtn.dataset.gallery === "next") {
+        galleryIndex[id] = (galleryIndex[id] + 1) % item.images.length;
+      }
+
+      if (gBtn.dataset.gallery === "thumb") {
+        galleryIndex[id] = Number(gBtn.dataset.index);
+      }
+
+      renderDetail(id);
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeDetail();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("active")) {
+        closeDetail();
+      }
+    });
+
+    typeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        typeButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeType = btn.dataset.type;
+        renderFeed();
+      });
+    });
+
+    searchEl.addEventListener("input", renderFeed);
+
+    renderFeed();
+  </script>
+</body>
+</html>

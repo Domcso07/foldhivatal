@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Beruházások és Hírek - Földhivatal</title>
+  <meta name="description" content="Magyar/HUN RP - Földhivatal beruházások és hírek oldal">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .page-title {
+      text-align: center;
+      margin: 0;
+      font-size: 34px;
+    }
+
+    .page-subtitle {
+      color: var(--muted);
+      text-align: center;
+      max-width: 760px;
+      margin: 10px auto 0;
+      line-height: 1.6;
+    }
+
+    .top-tools {
+      display: grid;
+      gap: 12px;
+      margin: 16px 0 4px;
+    }
+
+    .switches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .switch-btn {
+      background: transparent;
+      border: 1px solid #2b2f48;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+      min-height: 42px;
+    }
+
+    .switch-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .switch-btn.active {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.15);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.15) inset;
+    }
+
+    #search-input {
+      width: 100%;
+      max-width: 360px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #2b2f48;
+      background: #171a2b;
+      color: #e5e7eb;
+      margin: 0;
+      display: block;
+      font-size: 15px;
+    }
+
+    #search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+    }
+
+    .feed {
+      display: grid;
+      gap: 16px;
+      margin: 24px 0 20px;
+    }
+
+    .project-item {
+      background: var(--card);
+      border: 1px solid #24263a;
+      border-radius: 16px;
+      padding: 16px;
+      animation: itemIn 0.35s ease;
+    }
+
+    .project-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .project-title {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    .status {
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid #2b2f48;
+      white-space: nowrap;
+    }
+
+    .status.kesz {
+      color: #7dd3fc;
+      background: rgba(14, 116, 144, 0.18);
+      border-color: rgba(125, 211, 252, 0.35);
+    }
+
+    .status.epul {
+      color: #fcd34d;
+      background: rgba(146, 64, 14, 0.2);
+      border-color: rgba(252, 211, 77, 0.35);
+    }
+
+    .status.tervezett {
+      color: #c4b5fd;
+      background: rgba(91, 33, 182, 0.2);
+      border-color: rgba(196, 181, 253, 0.35);
+    }
+
+    .meta {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .desc {
+      margin: 0 0 14px;
+      line-height: 1.7;
+    }
+
+    .gallery {
+      margin-top: 4px;
+    }
+
+    .gallery-main-wrap {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #2b2f48;
+      background: #0c0f1a;
+      touch-action: pan-y;
+    }
+
+    .gallery-main {
+      width: 100%;
+      height: clamp(200px, 36vw, 420px);
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .gallery-main:hover {
+      transform: scale(1.02);
+    }
+
+    .gallery-nav {
+      position: absolute;
+      inset: auto 8px 8px auto;
+      display: flex;
+      gap: 6px;
+    }
+
+    .gallery-btn {
+      border: 1px solid #2b2f48;
+      background: rgba(15, 18, 32, 0.85);
+      color: var(--text);
+      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .thumbs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 8px;
+      margin-top: 9px;
+    }
+
+    .thumb {
+      border: 1px solid #2b2f48;
+      background: #101427;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      padding: 0;
+      min-height: 72px;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 70px;
+      object-fit: cover;
+      display: block;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .thumb.active {
+      border-color: var(--accent);
+    }
+
+    .thumb.active img,
+    .thumb:hover img {
+      opacity: 1;
+    }
+
+    .progress-wrap {
+      margin: 6px 0 14px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .progress-text {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .progress-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: #101427;
+      border: 1px solid #2b2f48;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #16a34a);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    details.history {
+      margin-top: 14px;
+      border-top: 1px solid #2b2f48;
+      padding-top: 12px;
+    }
+
+    details.history summary {
+      cursor: pointer;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 8px;
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .history-list {
+      list-style: none;
+      margin: 6px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .history-list li {
+      border-left: 2px solid #2b2f48;
+      padding-left: 10px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .history-list strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      margin: 18px 0 0;
+    }
+
+    @keyframes itemIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (min-width: 900px) {
+      .top-tools {
+        grid-template-columns: auto 1fr;
+        align-items: center;
+      }
+
+      #search-input {
+        margin: 0 0 0 auto;
+        max-width: 320px;
+      }
+
+      .project-item {
+        padding: 20px;
+      }
+    }
+
+    /* Mobil support */
+    @media (max-width: 768px) {
+      .container {
+        padding: 12px;
+      }
+
+      .nav {
+        padding: 8px 10px;
+        gap: 10px;
+      }
+
+      .brand {
+        gap: 6px;
+      }
+
+      .brand h1 {
+        font-size: 14px;
+        white-space: nowrap;
+      }
+
+      .logo-img {
+        height: 28px;
+      }
+
+      .menu {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        max-width: 60vw;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+      }
+
+      .menu::-webkit-scrollbar {
+        display: none;
+      }
+
+      .btn.secondary {
+        flex: 0 0 auto;
+        padding: 7px 10px;
+        font-size: 12px;
+        white-space: nowrap;
+        border-radius: 8px;
+      }
+
+      .hero {
+        padding: 20px 12px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .top-tools {
+        gap: 10px;
+      }
+
+      .switches {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .switch-btn {
+        width: 100%;
+        font-size: 13px;
+      }
+
+      #search-input {
+        max-width: 100%;
+        font-size: 14px;
+      }
+
+      .project-item {
+        padding: 12px;
+        border-radius: 14px;
+      }
+
+      .project-title {
+        font-size: 20px;
+      }
+
+      .meta,
+      .desc,
+      .history-list li {
+        font-size: 13px;
+      }
+
+      .gallery-main {
+        height: 210px;
+      }
+
+      .gallery-nav {
+        inset: auto 6px 6px auto;
+      }
+
+      .gallery-btn {
+        width: 42px;
+        height: 42px;
+      }
+
+      .thumbs {
+        display: flex;
+        overflow-x: auto;
+        gap: 8px;
+        padding-bottom: 4px;
+        scroll-snap-type: x mandatory;
+      }
+
+      .thumb {
+        flex: 0 0 92px;
+        scroll-snap-align: start;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .page-title {
+        font-size: 22px;
+      }
+
+      .project-title {
+        font-size: 18px;
+      }
+
+      .gallery-main {
+        height: 190px;
+      }
+
+      .status {
+        font-size: 11px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav container">
+      <div class="brand">
+        <img src="images/foldhivatal.png" alt="Földhivatal logó" class="logo-img">
+        <h1>Földhivatal</h1>
+      </div>
+      <div class="menu">
+        <a class="btn secondary" href="index.html">Kezdőlap</a>
+        <a class="btn secondary" href="urlap.html">Űrlap</a>
+        <a class="btn secondary" href="nyilvantartas.html">Nyilvántartás</a>
+        <a class="btn secondary" href="szabalyzat.html">Szabályzat</a>
+        <a class="btn secondary" href="csapat.html">Csapat</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2 class="page-title">Beruházások és Hírek</h2>
+      <p class="page-subtitle">
+        Futó, kész és tervezett projektek egy helyen. Projektenként több kép is lehet, plusz külön frissítési history.
+      </p>
+    </section>
+
+    <section class="container">
+      <div class="top-tools">
+        <div class="switches">
+          <button class="switch-btn active" data-type="projekt">Építkezések</button>
+          <button class="switch-btn" data-type="hir">Hírek</button>
+        </div>
+        <input id="search-input" type="text" placeholder="Keresés címre, frakcióra vagy szerzőre...">
+      </div>
+
+      <div id="feed" class="feed"></div>
+      <p id="emptyState" class="empty" hidden>Nincs találat.</p>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 Magyar/HUN RP - Földhivatal |
+    <a href="https://discord.gg/jt8veFAWYy" target="_blank" rel="noopener noreferrer">Discord</a>
+  </footer>
+
+  <script>
+    const items = [
+      {
+        id: "club-parkolo",
+        type: "projekt",
+        status: "epul",
+        title: "Magyar Club parkoló bővítés",
+        date: "2026-06-10",
+        author: "Kiss Bence",
+        investor: "Magyar Club",
+        progress: 65,
+        description: "Új férőhelyek, szélesebb beállók és jobb kihajtási rend készül. A projekt még építés alatt áll, ezért folyamatosan frissül.",
+        images: [
+          "images/beruhazas/magyar-club-1.png",
+          "images/beruhazas/magyar-club-2.png",
+          "images/beruhazas/magyar-club-3.png"
+        ],
+        history: [
+          { date: "2026-05-28", text: "Terület kijelölése és terv jóváhagyás." },
+          { date: "2026-06-03", text: "Alapozási és burkolat-előkészítési munkák indulása." },
+          { date: "2026-06-10", text: "Első felfestések és lámpahelyek kialakítása." }
+        ]
+      },
+      {
+        id: "hamburg-allomas",
+        type: "projekt",
+        status: "kesz",
+        title: "Hamburgi vasúti állomás modernizáció",
+        date: "2026-06-05",
+        author: "Nagy Máté",
+        investor: "DB Frakció",
+        progress: 100,
+        description: "Az állomás környezete teljesen megújult, jobb gyalogos átjárással és átláthatóbb közlekedési kapcsolatokkal.",
+        images: [
+          "images/beruhazas/hamburg-db-1.png",
+          "images/beruhazas/hamburg-db-2.png"
+        ],
+        history: [
+          { date: "2026-05-18", text: "Forgalmi modellezés és szükséglista lezárva." },
+          { date: "2026-05-27", text: "Peron melletti burkolati munkák és jelzések cseréje." },
+          { date: "2026-06-05", text: "Projekt átadva, forgalomba helyezve." }
+        ]
+      },
+      {
+        id: "deli-logisztika",
+        type: "projekt",
+        status: "tervezett",
+        title: "Déli logisztikai csomópont (I. ütem)",
+        date: "2026-06-14",
+        author: "Tóth Áron",
+        investor: "Kereskedelmi Tanács",
+        progress: 20,
+        description: "Nagy teherforgalomra tervezett új csomópont. Jelenleg előkészítési és engedélyeztetési szakaszban van.",
+        images: [
+          "images/beruhazas/logisztika-terv.png"
+        ],
+        history: [
+          { date: "2026-06-02", text: "Tervezési koncepció beadása." },
+          { date: "2026-06-08", text: "Frakciós egyeztetés és költségbecslés." },
+          { date: "2026-06-14", text: "Engedélyezési csomag benyújtva." }
+        ]
+      },
+      {
+        id: "hir-palyazat",
+        type: "hir",
+        status: "kesz",
+        title: "Új pályázati kör nyílt nagyprojektekhez",
+        date: "2026-06-12",
+        author: "Admin",
+        investor: "Földhivatal",
+        description: "A következő ciklusban kiemelten támogatottak azok a beruházások, amelyek forgalomcsökkentést vagy közösségi funkciót adnak.",
+        images: [
+          "images/hirek/palyazat-1.png"
+        ],
+        history: [
+          { date: "2026-06-12", text: "Pályázat megnyitva." }
+        ]
+      },
+      {
+        id: "hir-zarojelentes",
+        type: "hir",
+        status: "kesz",
+        title: "Havi beruházási összefoglaló közzétéve",
+        date: "2026-06-01",
+        author: "Szabó Levente",
+        investor: "Földhivatal",
+        description: "Elérhető a havi jelentés a kész, folyamatban lévő és tervezett fejlesztésekről.",
+        images: [
+          "images/hirek/osszefoglalo-1.png",
+          "images/hirek/osszefoglalo-2.png"
+        ],
+        history: [
+          { date: "2026-05-30", text: "Adatgyűjtés lezárva." },
+          { date: "2026-06-01", text: "Összefoglaló publikálva." }
+        ]
+      }
+    ];
+
+    const statusLabel = {
+      kesz: "Kész",
+      epul: "Épül",
+      tervezett: "Tervezett"
+    };
+
+    const galleryIndex = {};
+    items.forEach(item => { galleryIndex[item.id] = 0; });
+
+    let activeType = "projekt";
+
+    const feedEl = document.getElementById("feed");
+    const searchEl = document.getElementById("search-input");
+    const emptyEl = document.getElementById("emptyState");
+    const typeButtons = document.querySelectorAll(".switch-btn");
+
+    function formatDate(iso) {
+      return new Date(iso).toLocaleDateString("hu-HU", { year: "numeric", month: "long", day: "numeric" });
+    }
+
+    function filteredItems() {
+      const q = searchEl.value.trim().toLowerCase();
+      return items
+        .filter(item => item.type === activeType)
+        .filter(item => (`${item.title} ${item.description} ${item.author} ${item.investor}`).toLowerCase().includes(q))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    function render() {
+      const data = filteredItems();
+      feedEl.innerHTML = "";
+      emptyEl.hidden = data.length > 0;
+
+      data.forEach((item, i) => {
+        const currentImage = item.images[galleryIndex[item.id]] || item.images[0];
+        const article = document.createElement("article");
+        article.className = "project-item";
+        article.style.animationDelay = `${i * 0.04}s`;
+
+        const hasProgress = item.type === "projekt";
+
+        article.innerHTML = `
+          <div class="project-head">
+            <h3 class="project-title">${item.title}</h3>
+            <span class="status ${item.status}">${statusLabel[item.status] || "Státusz"}</span>
+          </div>
+
+          <p class="meta">
+            Dátum: ${formatDate(item.date)} | Írta: ${item.author} | Befektető/frakció: ${item.investor}
+          </p>
+
+          <p class="desc">${item.description}</p>
+
+          ${hasProgress ? `
+            <div class="progress-wrap">
+              <div class="progress-text">Készültség: ${item.progress}%</div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:${item.progress}%"></div>
+              </div>
+            </div>
+          ` : ""}
+
+          <div class="gallery">
+            <div class="gallery-main-wrap" data-swipe-id="${item.id}">
+              <img src="${currentImage}" alt="${item.title}" class="gallery-main" draggable="false">
+              ${item.images.length > 1 ? `
+                <div class="gallery-nav">
+                  <button class="gallery-btn" data-action="prev" data-id="${item.id}" aria-label="Előző kép"><</button>
+                  <button class="gallery-btn" data-action="next" data-id="${item.id}" aria-label="Következő kép">></button>
+                </div>
+              ` : ""}
+            </div>
+
+            ${item.images.length > 1 ? `
+              <div class="thumbs">
+                ${item.images.map((src, idx) => `
+                  <button class="thumb ${idx === galleryIndex[item.id] ? "active" : ""}" data-action="thumb" data-id="${item.id}" data-index="${idx}" aria-label="Kép ${idx + 1}">
+                    <img src="${src}" alt="${item.title} ${idx + 1}" draggable="false">
+                  </button>
+                `).join("")}
+              </div>
+            ` : ""}
+          </div>
+
+          <details class="history">
+            <summary>Frissítési history</summary>
+            <ul class="history-list">
+              ${item.history.map(h => `<li><strong>${formatDate(h.date)}</strong> - ${h.text}</li>`).join("")}
+            </ul>
+          </details>
+        `;
+
+        feedEl.appendChild(article);
+      });
+
+      bindGalleryActions();
+      bindSwipeActions();
+    }
+
+    function stepImage(id, direction) {
+      const item = items.find(x => x.id === id);
+      if (!item || item.images.length < 2) return;
+      galleryIndex[id] = (galleryIndex[id] + direction + item.images.length) % item.images.length;
+      render();
+    }
+
+    function bindGalleryActions() {
+      document.querySelectorAll("[data-action='prev']").forEach(btn => {
+        btn.addEventListener("click", () => stepImage(btn.dataset.id, -1));
+      });
+
+      document.querySelectorAll("[data-action='next']").forEach(btn => {
+        btn.addEventListener("click", () => stepImage(btn.dataset.id, 1));
+      });
+
+      document.querySelectorAll("[data-action='thumb']").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.id;
+          const idx = Number(btn.dataset.index);
+          galleryIndex[id] = idx;
+          render();
+        });
+      });
+    }
+
+    function bindSwipeActions() {
+      const swipeZones = document.querySelectorAll("[data-swipe-id]");
+      swipeZones.forEach(zone => {
+        let startX = 0;
+        let endX = 0;
+        const id = zone.dataset.swipeId;
+
+        zone.addEventListener("touchstart", (e) => {
+          startX = e.changedTouches[0].clientX;
+        }, { passive: true });
+
+        zone.addEventListener("touchend", (e) => {
+          endX = e.changedTouches[0].clientX;
+          const delta = endX - startX;
+          if (Math.abs(delta) < 40) return;
+          if (delta < 0) stepImage(id, 1);
+          else stepImage(id, -1);
+        }, { passive: true });
+      });
+    }
+
+    typeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        typeButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeType = btn.dataset.type;
+        render();
+      });
+    });
+
+    searchEl.addEventListener("input", render);
+
+    render();
+  </script>
+</body>
+</html>
