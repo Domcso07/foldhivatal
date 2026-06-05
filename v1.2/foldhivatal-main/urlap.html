@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Ingatlanregisztrációs űrlap</title>
+  <link rel="stylesheet" href="style.css"> <!-- közös stílus -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header>
+    <nav class="nav container">
+      <div class="brand">
+  <img src="images/foldhivatal.png" alt="Földhivatal logó" class="logo-img">
+  <h1>Földhivatal</h1>
+</div>
+
+      <div class="menu">
+      <a class="btn secondary" href="index.html">Kezdőlap</a>
+      <a class="btn secondary" href="urlap.html">Űrlap</a>
+      <a class="btn secondary" href="nyilvantartas.html">Nyilvántartás</a>
+      <a class="btn secondary" href="szabalyzat.html">Szabályzat</a>
+        <a class="btn secondary" href="csapat.html">Csapat</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>📋 Ingatlanregisztrációs űrlap</h1>
+    <div class="map-container">
+        <embed src="images/Maprender_v3_final.jpg" class="map">
+    </div>
+    <!-- Beágyazott Google Form -->
+     <p class="hint">ℹ️ Az űrlap kitöltése után a Földhivatal feldolgozza a kérelmet.</p>
+  <div class="iframe-container">
+  <iframe 
+    src="https://docs.google.com/forms/d/1JUHvJkLjC0ka8Vgfu4fC2qJYf9EB8-ayHDmZPsu_N9I/viewform?embedded=true" 
+    frameborder="0" 
+    marginheight="0" 
+    marginwidth="0">
+    Betöltés…
+  </iframe>
+</div>
+
+
+  </main>
+<div class="form-container card">
+  <h2>🏠 Ingatlan bérlési kérelem</h2>
+
+  <form id="rentForm">
+    <div class="form-group">
+      <label>Házszám</label>
+      <input type="number" name="hazszam" required>
+    </div>
+
+    <div class="form-group">
+      <label>Discord név</label>
+      <input type="text" name="discord" required>
+    </div>
+
+    <div class="form-group">
+      <label>Roblox név</label>
+      <input type="text" name="roblox" required>
+    </div>
+
+    <div class="form-group">
+      <label>Bérlés kezdete</label>
+      <input type="date" name="start" required>
+    </div>
+
+    <div class="form-group">
+      <label>Bérlés vége</label>
+      <input type="date" name="end" required>
+    </div>
+
+    <button type="submit" class="btn">Kérelem beküldése</button>
+  </form>
+
+  <p id="success-msg" class="success">✅ Sikeresen elküldve!</p>
+</div>
+  <footer>
+  © 2026 Magyar/HUN RP – Földhivatal | <a href="https://discord.gg/jt8veFAWYy" target="_blank">Discord</a>
+</footer>
+<script>
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1500138328798793850/KvV-F8SNwhsytbuNDGEc9KYjqqtpzwlHFUwo5D0izj63Pa4yXucFdNwHruUj8CtFNcNt";
+
+document.getElementById("rentForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const form = e.target;
+
+  const data = {
+    hazszam: form.hazszam.value,
+    discord: form.discord.value,
+    roblox: form.roblox.value,
+    start: form.start.value,
+    end: form.end.value
+  };
+
+  const payload = {
+    content: "📥 ÚJ INGATLAN KÉRELEM",
+    embeds: [
+      {
+        title: "🏠 Új bérlés",
+        color: 3447003,
+        fields: [
+          { name: "Házszám", value: data.hazszam, inline: true },
+          { name: "Discord", value: data.discord, inline: true },
+          { name: "Roblox", value: data.roblox, inline: true },
+          { name: "Kezdet", value: data.start, inline: true },
+          { name: "Vége", value: data.end, inline: true }
+        ]
+      }
+    ]
+  };
+
+  await fetch(WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  form.reset();
+  document.getElementById("success-msg").style.display = "block";
+});
+</script>
+</body>
+</html>
