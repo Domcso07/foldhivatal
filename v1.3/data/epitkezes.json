@@ -5,7 +5,7 @@
     "status": "epul",
     "category": "Közlekedés",
     "title": "Magyar Club Parkoló építése",
-    "date": "2026-06-10",
+    "date": "2026-06-01",
     "author": "",
     "investor": "Magyar Club",
     "progress": 65,
@@ -22,11 +22,11 @@
         "text": "Terület kijelölése és terv jóváhagyás."
       },
       {
-        "date": "2026-06-03",
+        "date": "2026-06-01",
         "text": "A lapozási és burkolat-előkészítési munkák elindultak."
       },
       {
-        "date": "2026-06-10",
+        "date": "2026-06-01",
         "text": "Első felfestések és lámpahelyek kialakítása."
       }
     ]
@@ -34,13 +34,13 @@
   {
     "id": "hamburg-allomas",
     "type": "projekt",
-    "status": "kesz",
+    "status": "epul",
     "category": "Közlekedés",
     "title": "Hamburgi Vasúti Állomás kiépítése",
-    "date": "2026-06-05",
-    "author": "Nagy Máté",
+    "date": "2026-06-01",
+    "author": "",
     "investor": "DB (Deutsche Bahn)",
-    "progress": 100,
+    "progress": 60,
     "short": "Állomási közlekedés és peronkapcsolat fejlesztés.",
     "description": "Az állomás környezete megújult, átláthatóbb gyalogos kapcsolatokkal és jobb közlekedési ritmussal.",
     "images": [
