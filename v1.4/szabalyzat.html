@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Földhivatali szabályzat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header>
+    <nav class="nav container">
+  <div class="brand">
+    <div class="logo">FH</div>
+    <h1>Földhivatal</h1>
+  </div>
+
+  <div class="menu">
+    <a class="btn secondary" href="index.html">Kezdőlap</a>
+    <a class="btn secondary" href="urlap.html">Űrlap</a>
+    <a class="btn secondary" href="nyilvantartas.html">Nyilvántartás</a>
+    <a class="btn secondary" href="szabalyzat.html">Szabályzat</a>
+    <a class="btn secondary" href="csapat.html">Csapat</a>
+  </div>
+</nav>
+  </header>
+
+  <main>
+    <h1>📄 Földhivatali szabályzat</h1>
+<main class="container">
+  <section class="card">
+    <h1>📄 Ház Bérlési Szabályzat</h1>
+
+    <div id="doc-content" class="doc-content">
+      Betöltés...
+    </div>
+  </section>
+</main>
+    </main>
+    <footer>
+  © 2026 Magyar/HUN RP – Földhivatal | <a href="https://discord.gg/jt8veFAWYy" target="_blank">Discord</a>
+</footer>
+</body>
+<script>
+async function loadDoc() {
+  const url = "https://docs.google.com/document/d/1h6zRSCONM5gumVXw69_-tay_LnFFSfqNwbDfzCGJSjc/export?format=html";
+  const target = document.getElementById("doc-content");
+
+  target.innerHTML = "Betoltes...";
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP hiba: " + res.status);
+
+    const html = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    let content = doc.body.innerHTML;
+    content = content.replace(/<p[^>]*class="[^"]*title[^"]*"[^>]*>[\s\S]*?1\. lap[\s\S]*?<\/p>/gi, "");
+
+    target.innerHTML = content || "Nincs megjelenitheto tartalom.";
+  } catch (err) {
+    console.error(err);
+    target.innerHTML = "<p>Betoltes sikertelen. Probald ujra kesobb.</p>";
+  }
+}
+
+loadDoc();
+
+</script>
+</html>
